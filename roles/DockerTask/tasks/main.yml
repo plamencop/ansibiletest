@@ -1,0 +1,23 @@
+---
+- name: Delete Container
+  docker:
+    name: tomcat
+    image: "{{ image_version }}"
+    state: absent
+
+- name: Build Docker
+  docker_image:
+    path: docker-folder
+    name: "{{ image_version }}"
+    tag: latest
+    nocache: yes
+
+- name: Create Container
+  docker:
+    name: tomcat
+    image: "{{ image_version }}"
+    state: started
+    net: adop-network
+    restart_policy: always   
+    ports: "8080:8080"
+
